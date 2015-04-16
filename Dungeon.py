@@ -1,5 +1,8 @@
 from Hero import Hero
-
+from random import randint
+import json
+from weapon_and_spell_classes import Spell
+from weapon_and_spell_classes import Weapon
 
 class NotAHero(Exception):
     pass
@@ -35,7 +38,6 @@ class Dungeon:
                     self.hero_position_x = l
                     self.hero_position_y = x
                     return True
-
 
     def move_hero(self, direction):
         if direction == "up":
@@ -73,11 +75,40 @@ class Dungeon:
             self.hero_position_y = next_y_position
             return True
 
+    def read_treasure_file(self, path):
+         with open(path, 'r') as load_file:
+            load_data = load_file.read()
+            my_treasure = json.loads(load_data)
+            for key in my_treasure:
+                my_treasure_type = key
+            if my_treasure_type == 'mana':
+                x = len(my_treasure[my_treasure_type])
+                self.hero.take_mana(my_treasure[my_treasure_type][randint(0, x - 1)])
+            elif my_treasure_type == 'health':
+                x = len(my_treasure[my_treasure_type])
+                self.hero.take_healing(my_treasure[my_treasure_type][randint(0, x - 1)])
+            elif my_treasure_type == 'spell':
+                this_spell = my_treasure[my_treasure_type][randint(0,len(my_treasure[my_treasure_type]) - 1)]
+                this_spell_name = this_spell[0]
+                this_spell_damage = this_spell[1]
+                this_spell_mana_cost = this_spell[2]
+                this_spell_cast_range = this_spell[3]
+                s = Spell(this_spell_name, this_spell_damage, this_spell_mana_cost, this_spell_cast_range)
+                self.hero.learn(s)
+            else:
+                this_weapon = my_treasure[my_treasure_type][randint(0,len(my_treasure[my_treasure_type]) - 1)]
+                this_weapon_name = this_weapon[0]
+                this_weapon_damage = this_weapon[1]
+                w = Weapon(this_weapon_name, this_weapon_damage)
+                self.hero.equip(w)
+
+
 my_hero = Hero("Bron", "Dragonslayer", 100, 100, 2)
 a = Dungeon(my_hero)
 a.map_reading('game_map.txt')
-print(a.spawn(my_hero))
+a.spawn(my_hero)
 a.print_map()
-print(a.hero_position_x)
-print(a.hero_position_y)
-print(a.move_hero("right"))
+a.hero_position_x
+a.hero_position_y
+a.move_hero("right")
+print(a.read_treasure_file("treasures.json"))

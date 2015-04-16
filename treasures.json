@@ -1,0 +1,5 @@
+{"mana": [2, 5, 10, 20, 35],
+ "health": [15, 25, 30, 36, 50],
+ "weapon": [["Knife", 20], ["Sword", 35], ["Hammer", 10]],
+ "spell" : [["Fireball", 30, 50, 2], ["Potion", 20, 25, 1]]
+}
