@@ -26,5 +26,4 @@ class Player:
             self.health = self._maximum_health
         return True
 
-    def take_mana(self):
-        pass
+
