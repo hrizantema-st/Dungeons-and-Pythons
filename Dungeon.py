@@ -78,6 +78,8 @@ class Dungeon:
         if self.list[next_x_position][next_y_position] == "G":
             pass
 
+
+
 my_hero = Hero("Bron", "Dragonslayer", 100, 100, 2)
 a = Dungeon(my_hero)
 a.map_reading('game_map.txt')
