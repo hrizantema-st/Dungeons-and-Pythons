@@ -15,3 +15,9 @@ class Hero(Player):
         self.health -= damage_points
         if self.health < 0:
             self.health = 0
+
+    def take_mana(self, mana_points):
+        self.mana += mana_points
+        if self.mana > self._maximum_mana:
+            self.mana = self._maximum_mana
+        return True

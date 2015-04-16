@@ -65,13 +65,18 @@ class Dungeon:
         if self.list[next_x_position][next_y_position] == "#":
             return False
         if self.list[next_x_position][next_y_position] == "E":
+            self.hero.take_mana(self.hero.mana_regeneration_rate)
             pass
         if self.list[next_x_position][next_y_position] == "T":
+            self.hero.take_mana(self.hero.mana_regeneration_rate)
             pass
         if self.list[next_x_position][next_y_position] == ".":
             self.hero_position_x = next_x_position
             self.hero_position_y = next_y_position
+            self.hero.take_mana(self.hero.mana_regeneration_rate)
             return True
+        if self.list[next_x_position][next_y_position] == "G":
+            pass
 
 my_hero = Hero("Bron", "Dragonslayer", 100, 100, 2)
 a = Dungeon(my_hero)
