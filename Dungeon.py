@@ -4,6 +4,7 @@ import json
 from weapon_and_spell_classes import Spell
 from weapon_and_spell_classes import Weapon
 
+
 class NotAHero(Exception):
     pass
 
@@ -80,26 +81,29 @@ class Dungeon:
         if self.list[next_x_position][next_y_position] == "G":
             pass
 
-
-
-    def read_treasure_file(self, path):
-         with open(path, 'r') as load_file:
+    def pick_treasure(self, path):
+        with open(path, 'r') as load_file:
             load_data = load_file.read()
             my_treasure = json.loads(load_data)
             for key in my_treasure:
                 my_treasure_type = key
             if my_treasure_type == 'mana':
                 x = len(my_treasure[my_treasure_type])
-                self.hero.take_mana(my_treasure[my_treasure_type][randint(0, x - 1)])
+                self.hero.take_mana(
+                    my_treasure[my_treasure_type][randint(0, x - 1)])
             elif my_treasure_type == 'health':
                 x = len(my_treasure[my_treasure_type])
-                self.hero.take_healing(my_treasure[my_treasure_type][randint(0, x - 1)])
+                self.hero.take_healing(
+                    my_treasure[my_treasure_type][randint(0, x - 1)])
             elif my_treasure_type == 'spell':
-                this_spell = my_treasure[my_treasure_type][randint(0,len(my_treasure[my_treasure_type]) - 1)]
-                s = Spell(this_spell[0], this_spell[1], this_spell[2], this_spell[3])
+                this_spell = my_treasure[my_treasure_type][
+                    randint(0, len(my_treasure[my_treasure_type]) - 1)]
+                s = Spell(
+                    this_spell[0], this_spell[1], this_spell[2], this_spell[3])
                 self.hero.learn(s)
             else:
-                this_weapon = my_treasure[my_treasure_type][randint(0,len(my_treasure[my_treasure_type]) - 1)]
+                this_weapon = my_treasure[my_treasure_type][
+                    randint(0, len(my_treasure[my_treasure_type]) - 1)]
                 w = Weapon(this_weapon[0], this_weapon[1])
                 self.hero.equip(w)
 
@@ -112,4 +116,4 @@ a.print_map()
 a.hero_position_x
 a.hero_position_y
 a.move_hero("right")
-print(a.read_treasure_file("treasures.json"))
+print(a.pick_treasure("treasures.json"))
