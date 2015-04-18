@@ -23,22 +23,6 @@ class TestHero(unittest.TestCase):
     def test_take_mana(self):
         self.assertTrue(self.h.take_mana(10))
 
-    def test_learn(self):
-        s = Spell("Potion", 20, 25, 1)
-        self.h.learn(s)
-        self.assertEqual(self.h.spell, [s])
-        s1 = Spell("Fireball", 30, 50, 2)
-        self.h.learn(s1)
-        self.assertEqual(self.h.spell, [s1])
-
-    def test_equip(self):
-        w = Weapon("Hammer", 10)
-        self.h.equip(w)
-        self.assertEqual(self.h.weapon, [w])
-        w1 = Weapon("Sword", 35)
-        self.h.equip(w1)
-        self.assertEqual(self.h.weapon, [w1])
-
     def test_attack(self):
         self.assertEqual(self.h.attack("weapon"), 0)
         self.assertEqual(self.h.attack("spell"), 0)

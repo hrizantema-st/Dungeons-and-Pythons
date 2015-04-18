@@ -1,5 +1,7 @@
 import unittest
 from player import Player
+from weapon_and_spell_classes import Weapon
+from weapon_and_spell_classes import Spell
 
 class TestPlayer(unittest.TestCase):
 
@@ -31,6 +33,22 @@ class TestPlayer(unittest.TestCase):
         self.my_player.health-=15
         self.assertTrue(self.my_player.take_healing(5))
         self.assertEqual(self.my_player.health, 25)
+
+    def test_learn(self):
+        s = Spell("Potion", 20, 25, 1)
+        self.my_player.learn(s)
+        self.assertEqual(self.my_player.spell, [s])
+        s1 = Spell("Fireball", 30, 50, 2)
+        self.my_player.learn(s1)
+        self.assertEqual(self.my_player.spell, [s1])
+
+    def test_equip(self):
+        w = Weapon("Hammer", 10)
+        self.my_player.equip(w)
+        self.assertEqual(self.my_player.weapon, [w])
+        w1 = Weapon("Sword", 35)
+        self.my_player.equip(w1)
+        self.assertEqual(self.my_player.weapon, [w1])
 
 if __name__ == "__main__":
     unittest.main()
