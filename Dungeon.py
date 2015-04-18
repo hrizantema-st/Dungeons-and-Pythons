@@ -96,17 +96,11 @@ class Dungeon:
                 self.hero.take_healing(my_treasure[my_treasure_type][randint(0, x - 1)])
             elif my_treasure_type == 'spell':
                 this_spell = my_treasure[my_treasure_type][randint(0,len(my_treasure[my_treasure_type]) - 1)]
-                this_spell_name = this_spell[0]
-                this_spell_damage = this_spell[1]
-                this_spell_mana_cost = this_spell[2]
-                this_spell_cast_range = this_spell[3]
-                s = Spell(this_spell_name, this_spell_damage, this_spell_mana_cost, this_spell_cast_range)
+                s = Spell(this_spell[0], this_spell[1], this_spell[2], this_spell[3])
                 self.hero.learn(s)
             else:
                 this_weapon = my_treasure[my_treasure_type][randint(0,len(my_treasure[my_treasure_type]) - 1)]
-                this_weapon_name = this_weapon[0]
-                this_weapon_damage = this_weapon[1]
-                w = Weapon(this_weapon_name, this_weapon_damage)
+                w = Weapon(this_weapon[0], this_weapon[1])
                 self.hero.equip(w)
 
 
