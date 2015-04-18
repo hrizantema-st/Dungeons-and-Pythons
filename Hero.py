@@ -48,8 +48,12 @@ class Hero(Player):
         if by == "weapon":
             if self.weapon != []:
                 return self.weapon[0].damage
+            else:
+                return 0
         if by == "spell":
             if self.spell != []:
                 return self.spell[0].damage
+            else:
+                return 0
         else:
             raise ValueError
