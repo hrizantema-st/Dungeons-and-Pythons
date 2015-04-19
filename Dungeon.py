@@ -89,31 +89,24 @@ class Dungeon:
                 my_treasure_type = key
             if my_treasure_type == 'mana':
                 x = len(my_treasure[my_treasure_type])
-                self.hero.take_mana(
-                    my_treasure[my_treasure_type][randint(0, x - 1)])
+                tr = my_treasure[my_treasure_type][randint(0, x - 1)]
+                self.hero.take_mana(tr)
+                return "{}'s treasure are {} mana points".format(self.hero.name, tr)
             elif my_treasure_type == 'health':
                 x = len(my_treasure[my_treasure_type])
-                self.hero.take_healing(
-                    my_treasure[my_treasure_type][randint(0, x - 1)])
+                tr = my_treasure[my_treasure_type][randint(0, x - 1)]
+                self.hero.take_healing(tr)
+                return "{}'s treasure are {} health points".format(self.hero.name, tr)
             elif my_treasure_type == 'spell':
                 this_spell = my_treasure[my_treasure_type][
                     randint(0, len(my_treasure[my_treasure_type]) - 1)]
                 s = Spell(
                     this_spell[0], this_spell[1], this_spell[2], this_spell[3])
                 self.hero.learn(s)
+                return "{}'s treasure is {}".format(self.hero.name, s)
             else:
                 this_weapon = my_treasure[my_treasure_type][
                     randint(0, len(my_treasure[my_treasure_type]) - 1)]
                 w = Weapon(this_weapon[0], this_weapon[1])
                 self.hero.equip(w)
-
-
-my_hero = Hero("Bron", "Dragonslayer", 100, 100, 2)
-a = Dungeon(my_hero)
-a.map_reading('game_map.txt')
-a.spawn(my_hero)
-a.print_map()
-a.hero_position_x
-a.hero_position_y
-a.move_hero("right")
-print(a.pick_treasure("treasures.json"))
+                return "{}'s treasure is {}".format(self.hero.name, w)

@@ -55,8 +55,10 @@ class TestDungeon(unittest.TestCase):
         self.assertTrue(self.my_dungeon.move_hero("down"))
 
     def test_pick_treasure(self):
-        pass
-
+        x = self.my_dungeon.pick_treasure("treasures.json")
+        x = x[:15]
+        needed = "Bron's treasure"
+        self.assertEqual(x, needed)
 
 if __name__ == '__main__':
     unittest.main()

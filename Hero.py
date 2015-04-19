@@ -1,6 +1,4 @@
 from player import Player
-from weapon_and_spell_classes import Weapon
-from weapon_and_spell_classes import Spell
 
 class Hero(Player):
 
