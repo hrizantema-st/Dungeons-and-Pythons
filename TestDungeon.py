@@ -3,10 +3,11 @@ from Dungeon import Dungeon
 from Hero import Hero
 from Dungeon import NotAHero
 
+
 class TestDungeon(unittest.TestCase):
 
     def setUp(self):
-        self.my_hero = Hero("Bron","Dragonslayer", 100, 50, 2)
+        self.my_hero = Hero("Bron", "Dragonslayer", 100, 50, 2)
         self.my_dungeon = Dungeon(self.my_hero)
 
     def test_initialisation(self):
@@ -46,13 +47,19 @@ class TestDungeon(unittest.TestCase):
         self.my_dungeon.hero_position_x = 0
         self.my_dungeon.hero_position_y = 0
         self.assertTrue(self.my_dungeon.move_hero("right"))
-        self.my_dungeon.hero_position_y = 2
+        self.assertEqual(self.my_dungeon.list[0][1], 'H')
+        self.assertEqual(self.my_dungeon.list[0][0], '.')
+        self.my_dungeon.hero_position_y = 1
+        self.my_dungeon.hero_position_x = 0
         self.assertTrue(self.my_dungeon.move_hero("left"))
         self.my_dungeon.hero_position_x = 1
         self.my_dungeon.hero_position_y = 1
         self.assertTrue(self.my_dungeon.move_hero("up"))
-        self.my_dungeon.hero_position_x = 1
+        self.my_dungeon.hero_position_x = 0
+        self.my_dungeon.hero_position_y = 1
         self.assertTrue(self.my_dungeon.move_hero("down"))
+        self.assertEqual(self.my_dungeon.list[0][1], '.')
+        self.assertEqual(self.my_dungeon.list[1][1], 'H')
 
     def test_pick_treasure(self):
         x = self.my_dungeon.pick_treasure("treasures.json")

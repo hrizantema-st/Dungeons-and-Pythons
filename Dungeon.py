@@ -67,19 +67,28 @@ class Dungeon:
 
         if self.list[next_x_position][next_y_position] == "#":
             return False
-        if self.list[next_x_position][next_y_position] == "E":
-            self.hero.take_mana(self.hero.mana_regeneration_rate)
-            pass
-        if self.list[next_x_position][next_y_position] == "T":
-            self.hero.take_mana(self.hero.mana_regeneration_rate)
-            pass
-        if self.list[next_x_position][next_y_position] == ".":
-            self.hero_position_x = next_x_position
-            self.hero_position_y = next_y_position
-            self.hero.take_mana(self.hero.mana_regeneration_rate)
+        else:
+            if self.list[next_x_position][next_y_position] == "E":
+                self.hero.take_mana(self.hero.mana_regeneration_rate)
+                self.changing_pos_func(next_x_position, next_y_position)
+                pass
+            if self.list[next_x_position][next_y_position] == "T":
+                self.hero.take_mana(self.hero.mana_regeneration_rate)
+                self.changing_pos_func(next_x_position, next_y_position)
+                self.pick_treasure("treasures.json")
+            if self.list[next_x_position][next_y_position] == ".":
+                self.changing_pos_func(next_x_position, next_y_position)
+                self.hero.take_mana(self.hero.mana_regeneration_rate)
+            if self.list[next_x_position][next_y_position] == "G":
+                self.changing_pos_func(next_x_position, next_y_position)
+                print("This is the Gate to an other Dungeon")
             return True
-        if self.list[next_x_position][next_y_position] == "G":
-            pass
+
+    def changing_pos_func(self, x, y):
+        self.list[x][y] = 'H'
+        self.list[self.hero_position_x][self.hero_position_y] = '.'
+        self.hero_position_x = x
+        self.hero_position_y = y
 
     def pick_treasure(self, path):
         with open(path, 'r') as load_file:
