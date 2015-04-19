@@ -16,10 +16,6 @@ class TestHero(unittest.TestCase):
         needed = "Bron the Dragonslayer"
         self.assertEqual(needed, self.h.known_as())
 
-    def test_take_damage(self):
-        self.h.take_damage(2.2)
-        self.assertEqual(self.h.health, 97.8)
-
     def test_take_mana(self):
         self.assertTrue(self.h.take_mana(10))
 

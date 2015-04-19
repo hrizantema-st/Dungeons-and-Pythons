@@ -3,6 +3,7 @@ from player import Player
 from weapon_and_spell_classes import Weapon
 from weapon_and_spell_classes import Spell
 
+
 class TestPlayer(unittest.TestCase):
 
     def setUp(self):
@@ -18,7 +19,7 @@ class TestPlayer(unittest.TestCase):
 
     def test_can_cast(self):
         self.assertTrue(self.my_player.can_cast())
-        no_mana_player = Player (10, 0)
+        no_mana_player = Player(10, 0)
         self.assertFalse(no_mana_player.can_cast())
 
     def test_get_health(self):
@@ -30,7 +31,7 @@ class TestPlayer(unittest.TestCase):
     def test_healing(self):
         dead_player = Player(0, 12)
         self.assertFalse(dead_player.take_healing(2))
-        self.my_player.health-=15
+        self.my_player.health -= 15
         self.assertTrue(self.my_player.take_healing(5))
         self.assertEqual(self.my_player.health, 25)
 
@@ -49,6 +50,18 @@ class TestPlayer(unittest.TestCase):
         w1 = Weapon("Sword", 35)
         self.my_player.equip(w1)
         self.assertEqual(self.my_player.weapon, [w1])
+
+    def test_take_damage(self):
+        self.my_player.take_damage(30)
+        self.assertEqual(self.my_player.health, 5)
+        self.my_player.take_damage(15)
+        self.assertEqual(self.my_player.health, 0)
+
+    def test_take_mana(self):
+        pass
+
+    def test_attack(self):
+        pass
 
 if __name__ == "__main__":
     unittest.main()

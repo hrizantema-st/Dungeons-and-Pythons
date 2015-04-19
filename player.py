@@ -28,6 +28,9 @@ class Player:
             self.health = self._maximum_health
         return True
 
+    def take_mana():
+        pass
+
     def learn(self, spell):
         if self.spell == []:
             self.spell.append(spell)
@@ -45,3 +48,12 @@ class Player:
                 self.weapon[0] = weapon
             else:
                 pass
+
+    def take_damage(self, damage):
+        self.health -= damage
+
+        if self.health < 0:
+            self.health = 0
+
+    def attack(self, by):
+        pass

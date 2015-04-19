@@ -7,6 +7,9 @@ class Enemy(Player):
         super().__init__(health, mana)
         self.damage = damage
 
+    def take_mana():
+        pass
+
     def attack(self, by=""):
         if by == "weapon":
             if self.weapon != []:
