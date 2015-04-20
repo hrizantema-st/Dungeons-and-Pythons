@@ -41,11 +41,6 @@ class TestDungeon(unittest.TestCase):
 
     def test_move_hero(self):
         self.my_dungeon.map_reading("game_map.txt")
-        self.my_dungeon.hero_position_x = 0
-        self.my_dungeon.hero_position_y = 0
-        self.assertTrue(self.my_dungeon.move_hero("right"))
-        self.assertEqual(self.my_dungeon.list[0][1], 'H')
-        self.assertEqual(self.my_dungeon.list[0][0], '.')
         self.my_dungeon.hero_position_y = 1
         self.my_dungeon.hero_position_x = 0
         self.assertTrue(self.my_dungeon.move_hero("left"))
@@ -55,8 +50,11 @@ class TestDungeon(unittest.TestCase):
         self.my_dungeon.hero_position_x = 0
         self.my_dungeon.hero_position_y = 1
         self.assertTrue(self.my_dungeon.move_hero("down"))
-        self.assertEqual(self.my_dungeon.list[0][1], '.')
-        self.assertEqual(self.my_dungeon.list[1][1], 'H')
+
+    def test_changing_pos(self):
+        self.my_dungeon.changing_pos_func(0, 1)
+        self.assertEqual(self.my_dungeon.hero_position_x, 0)
+        self.assertEqual(self.my_dungeon.hero_position_y, 1)
 
     def test_pick_treasure(self):
         my_dict = Dungeon.load_treasure_file("treasures.json")

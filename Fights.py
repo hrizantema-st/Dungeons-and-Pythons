@@ -7,3 +7,4 @@ class Fights:
     def hero_attack(self):
         pass
 
+

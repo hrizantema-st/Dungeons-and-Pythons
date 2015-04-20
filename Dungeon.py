@@ -9,7 +9,26 @@ class NotAHero(Exception):
     pass
 
 
+class IncorrectDirection(Exception):
+    pass
+
+
 class Dungeon:
+
+    OBSTACLE = "#"
+    SPAWNING_POINT = "S"
+    ENEMY = "E"
+    EXIT = "G"
+    TREASURE = "T"
+    WALKABLE_PATH = "."
+    HERO = "H"
+
+    DIRECTIONS = {
+        "up": (-1, 0),
+        "down": (1, 0),
+        "left": (0, -1),
+        "right": (0, 1)
+    }
 
     @staticmethod
     def map_reading(path):
@@ -35,59 +54,44 @@ class Dungeon:
             raise NotAHero
         for l in range(0, len(self.list)):
             for x in range(0, len(self.list[l])):
-                if self.list[l][x] == 'S':
-                    self.list[l][x] = 'H'
+                if self.list[l][x] == Dungeon.SPAWNING_POINT:
+                    self.list[l][x] = Dungeon.HERO
                     self.hero_position_x = l
                     self.hero_position_y = x
                     return True
 
     def move_hero(self, direction):
-        if direction == "up":
-            if self.hero_position_x == 0:
-                return False
-            next_x_position = self.hero_position_x - 1
-            next_y_position = self.hero_position_y
 
-        if direction == "down":
-            if self.hero_position_x == len(self.list) - 1:
-                return False
-            next_x_position = self.hero_position_x + 1
-            next_y_position = self.hero_position_y
+        if direction not in Dungeon.DIRECTIONS:
+            raise IncorrectDirection
 
-        if direction == "left":
-            if self.hero_position_y == 0:
-                return False
-            next_y_position = self.hero_position_y - 1
-            next_x_position = self.hero_position_x
+        next_x_position = self.hero_position_x + Dungeon.DIRECTIONS[direction][0]
+        next_y_position = self.hero_position_y + Dungeon.DIRECTIONS[direction][1]
 
-        if direction == "right":
-            if self.hero_position_y == len(self.list[0]) - 1:
-                return False
-            next_x_position = self.hero_position_x
-            next_y_position = self.hero_position_y + 1
+        if next_x_position not in range(0, len(self.list)) or next_y_position in [-1, len(self.list[0])]:
+            return False
 
-        if self.list[next_x_position][next_y_position] == "#":
+        if self.list[next_x_position][next_y_position] == Dungeon.OBSTACLE:
             return False
         else:
-            if self.list[next_x_position][next_y_position] == "E":
-                self.hero.take_mana(self.hero.mana_regeneration_rate)
-                self.changing_pos_func(next_x_position, next_y_position)
+            if self.list[next_x_position][next_y_position] == Dungeon.ENEMY:
                 pass
-            if self.list[next_x_position][next_y_position] == "T":
-                self.hero.take_mana(self.hero.mana_regeneration_rate)
-                self.changing_pos_func(next_x_position, next_y_position)
-                self.pick_treasure("treasures.json")
-            if self.list[next_x_position][next_y_position] == ".":
-                self.changing_pos_func(next_x_position, next_y_position)
-                self.hero.take_mana(self.hero.mana_regeneration_rate)
-            if self.list[next_x_position][next_y_position] == "G":
-                self.changing_pos_func(next_x_position, next_y_position)
-                print("This is the Gate to an other Dungeon")
-            return True
+            elif self.list[next_x_position][next_y_position] == Dungeon.TREASURE:
+                treasures_dict = Dungeon.load_treasure_file("treasures.json")
+                ret_for_treasure = self.pick_treasure(treasures_dict)
+                return ret_for_treasure
+            elif self.list[next_x_position][next_y_position] == Dungeon.EXIT:
+                return "You are the WINNER"
+            else:
+                # SPAWNING_POINT or WALKABLE_PATH
+                return True
+            self.hero.take_mana(self.hero.mana_regeneration_rate)
+            self.changing_pos_func(next_x_position, next_y_position)
 
     def changing_pos_func(self, x, y):
-        self.list[x][y] = 'H'
-        self.list[self.hero_position_x][self.hero_position_y] = '.'
+        self.list[x][y] = Dungeon.HERO
+        self.list[self.hero_position_x][
+            self.hero_position_y] = Dungeon.WALKABLE_PATH
         self.hero_position_x = x
         self.hero_position_y = y
 
@@ -110,12 +114,12 @@ class Dungeon:
             self.hero.take_healing(tr)
             return "{}'s treasure are {} health points".format(self.hero.name, tr)
         elif my_treasure_type == 'spell':
-            this_spell = eval(my_treasure[my_treasure_type][
-                randint(0, len(my_treasure[my_treasure_type]) - 1)])
+            this_spell = eval((my_treasure[my_treasure_type][
+                randint(0, len(my_treasure[my_treasure_type]) - 1)]).__repr__())
             self.hero.learn(this_spell)
             return "{}'s treasure is {}".format(self.hero.name, this_spell)
         else:
-            this_weapon = eval(my_treasure[my_treasure_type][
-                randint(0, len(my_treasure[my_treasure_type]) - 1)])
+            this_weapon = eval((my_treasure[my_treasure_type][
+                randint(0, len(my_treasure[my_treasure_type]) - 1)]).__repr__())
             self.hero.equip(this_weapon)
             return "{}'s treasure is {}".format(self.hero.name, this_weapon)
