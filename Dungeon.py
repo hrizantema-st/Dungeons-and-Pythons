@@ -23,6 +23,13 @@ class Dungeon:
     WALKABLE_PATH = "."
     HERO = "H"
 
+    DIRECTIONS = {
+            "up": (-1, 0),
+            "down": (1, 0),
+            "left": (0, -1),
+            "right": (0, 1)
+        }
+
     def __init__(self, hero):
         self.list = []
         self.hero_position_x = -1
@@ -53,23 +60,15 @@ class Dungeon:
                     return True
 
     def move_hero(self, direction):
-        NEIGHBORS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        if direction == "up":
-            tmp_next_position = NEIGHBORS[0]
-        elif direction == "down":
-            tmp_next_position = NEIGHBORS[1]
-        elif direction == "left":
-            tmp_next_position = NEIGHBORS[2]
-        elif direction == "right":
-            tmp_next_position = NEIGHBORS[3]
-        else:
+
+        if direction not in Dungeon.DIRECTIONS
             raise IncorrectDirection
 
-        next_x_position = self.hero_position_x + tmp_next_position[0]
-        next_y_position = self.hero_position_y + tmp_next_position[1]
+        next_x_position = self.hero_position_x + Dungeon.DIRECTIONS[direction][0]
+        next_y_position = self.hero_position_y + Dungeon.DIRECTIONS[direction][1]
 
-        if next_x_position == -1 or next_x_position == len(self.list) \
-                or next_y_position == -1 or next_y_position == len(self.list[0]):
+        if next_x_position not in range(0, len(self.list)) \
+                or next_y_position in [-1, len(self.list[0])]:
             return False
 
         if self.list[next_x_position][next_y_position] == Dungeon.OBSTACLE:
