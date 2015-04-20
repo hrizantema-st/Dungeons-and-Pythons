@@ -14,6 +14,11 @@ class TestWeapon(unittest.TestCase):
         needed = "Hammer weapon with 10 damage"
         self.assertEqual(needed, w.__str__())
 
+    def test_repr(self):
+        w = Weapon("Hammer", 10)
+        needed = "Weapon('Hammer', 10)"
+        self.assertEqual(needed, w.__repr__())
+
 
 class TestSpell(unittest.TestCase):
 
@@ -25,6 +30,11 @@ class TestSpell(unittest.TestCase):
         s = Spell("Potion", 20, 25, 1)
         needed = "Potion spell with 20 damage, 25 mana cost and 1 cast range"
         self.assertEqual(needed, s.__str__())
+
+    def test_repr(self):
+        s = Spell("Potion", 20, 25, 1)
+        needed = "Spell('Potion', 20, 25, 1)"
+        self.assertEqual(needed, s.__repr__())
 
 if __name__ == "__main__":
     unittest.main()

@@ -8,21 +8,18 @@ class TestDungeon(unittest.TestCase):
 
     def setUp(self):
         self.my_hero = Hero("Bron", "Dragonslayer", 100, 50, 2)
-        self.my_dungeon = Dungeon(self.my_hero)
+        self.my_map = [['S', '.', '#', '#', '.', '.', '.', '.', '.', 'T'],
+                       ['#', 'T', '#', '#', '.', '.', '#', '#', '#', '.'],
+                       ['#', '.', '#', '#', '#', 'E', '#', '#', '#', 'E'],
+                       ['#', '.', 'E', '.', '.', '.', '#', '#', '#', '.'],
+                       ['#', '#', '#', 'T', '#', '#', '#', '#', '#', 'G']]
+        self.my_dungeon = Dungeon(self.my_hero, self.my_map)
+
+    def test_map_reading(self):
+        self.assertEqual(Dungeon.map_reading("game_map.txt"), self.my_map)
 
     def test_initialisation(self):
         self.assertTrue(isinstance(self.my_dungeon, Dungeon))
-
-    def test_map_reading(self):
-        needed = [['S', '.', '#', '#', '.', '.', '.', '.', '.', 'T'],
-                  ['#', 'T', '#', '#', '.', '.', '#', '#', '#', '.'],
-                  ['#', '.', '#', '#', '#', 'E', '#', '#', '#', 'E'],
-                  ['#', '.', 'E', '.', '.', '.', '#', '#', '#', '.'],
-                  ['#', '#', '#', 'T', '#', '#', '#', '#', '#', 'G']]
-        self.assertEqual(self.my_dungeon.map_reading("game_map.txt"), needed)
-
-    def test_print_map(self):
-        pass
 
     def test_spawn(self):
         with self.assertRaises(NotAHero):
@@ -62,10 +59,14 @@ class TestDungeon(unittest.TestCase):
         self.assertEqual(self.my_dungeon.list[1][1], 'H')
 
     def test_pick_treasure(self):
-        x = self.my_dungeon.pick_treasure("treasures.json")
+        my_dict = Dungeon.load_treasure_file("treasures.json")
+        x = self.my_dungeon.pick_treasure(my_dict)
         x = x[:15]
         needed = "Bron's treasure"
         self.assertEqual(x, needed)
+
+    def test_print_map(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()

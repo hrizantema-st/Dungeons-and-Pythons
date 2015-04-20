@@ -11,23 +11,24 @@ class NotAHero(Exception):
 
 class Dungeon:
 
-    def __init__(self, hero):
-        self.list = []
+    @staticmethod
+    def map_reading(path):
+        text_file = open(path, "r")
+        text = text_file.read().split('\n')
+        text_file.close()
+        my_map = text[:-1]
+        my_map = [list(l) for l in my_map]
+        return my_map
+
+    def __init__(self, hero, my_map):
+        self.list = Dungeon.map_reading("game_map.txt")
         self.hero_position_x = -1
         self.hero_position_y = -1
         self.hero = hero
 
-    def map_reading(self, path):
-        text_file = open(path, "r")
-        text = text_file.read().split('\n')
-        text_file.close()
-        self.list = text[:-1]
-        self.list = [list(l) for l in self.list]
-        return self.list
-
     def print_map(self):
         for l in self.list:
-            print("".join(l))
+            return ("".join(l))
 
     def spawn(self, hero):
         if not (isinstance(hero, Hero)):
@@ -90,32 +91,31 @@ class Dungeon:
         self.hero_position_x = x
         self.hero_position_y = y
 
-    def pick_treasure(self, path):
+    @staticmethod
+    def load_treasure_file(path):
         with open(path, 'r') as load_file:
             load_data = load_file.read()
             my_treasure = json.loads(load_data)
-            for key in my_treasure:
-                my_treasure_type = key
-            if my_treasure_type == 'mana':
-                x = len(my_treasure[my_treasure_type])
-                tr = my_treasure[my_treasure_type][randint(0, x - 1)]
-                self.hero.take_mana(tr)
-                return "{}'s treasure are {} mana points".format(self.hero.name, tr)
-            elif my_treasure_type == 'health':
-                x = len(my_treasure[my_treasure_type])
-                tr = my_treasure[my_treasure_type][randint(0, x - 1)]
-                self.hero.take_healing(tr)
-                return "{}'s treasure are {} health points".format(self.hero.name, tr)
-            elif my_treasure_type == 'spell':
-                this_spell = my_treasure[my_treasure_type][
-                    randint(0, len(my_treasure[my_treasure_type]) - 1)]
-                s = Spell(
-                    this_spell[0], this_spell[1], this_spell[2], this_spell[3])
-                self.hero.learn(s)
-                return "{}'s treasure is {}".format(self.hero.name, s)
-            else:
-                this_weapon = my_treasure[my_treasure_type][
-                    randint(0, len(my_treasure[my_treasure_type]) - 1)]
-                w = Weapon(this_weapon[0], this_weapon[1])
-                self.hero.equip(w)
-                return "{}'s treasure is {}".format(self.hero.name, w)
+        return my_treasure
+
+    def pick_treasure(self, my_treasure):
+        for key in my_treasure:
+            my_treasure_type = key
+            x = len(my_treasure[my_treasure_type])
+            tr = my_treasure[my_treasure_type][randint(0, x - 1)]
+        if my_treasure_type == 'mana':
+            self.hero.take_mana(tr)
+            return "{}'s treasure are {} mana points".format(self.hero.name, tr)
+        elif my_treasure_type == 'health':
+            self.hero.take_healing(tr)
+            return "{}'s treasure are {} health points".format(self.hero.name, tr)
+        elif my_treasure_type == 'spell':
+            this_spell = eval(my_treasure[my_treasure_type][
+                randint(0, len(my_treasure[my_treasure_type]) - 1)])
+            self.hero.learn(this_spell)
+            return "{}'s treasure is {}".format(self.hero.name, this_spell)
+        else:
+            this_weapon = eval(my_treasure[my_treasure_type][
+                randint(0, len(my_treasure[my_treasure_type]) - 1)])
+            self.hero.equip(this_weapon)
+            return "{}'s treasure is {}".format(self.hero.name, this_weapon)

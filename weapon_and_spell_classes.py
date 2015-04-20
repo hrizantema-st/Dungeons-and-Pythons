@@ -7,6 +7,9 @@ class Weapon:
     def __str__(self):
         return "{} weapon with {} damage".format(self.name, self.damage)
 
+    def __repr__(self):
+        return "Weapon('{}', {})".format(self.name, self.damage)
+
 
 class Spell:
 
@@ -18,3 +21,6 @@ class Spell:
 
     def __str__(self):
         return "{} spell with {} damage, {} mana cost and {} cast range".format(self.name, self.damage, self.mana_cost, self.cast_range)
+
+    def __repr__(self):
+        return "Spell('{}', {}, {}, {})".format(self.name, self.damage, self.mana_cost, self.cast_range)
